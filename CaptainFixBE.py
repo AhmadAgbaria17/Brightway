@@ -28,8 +28,8 @@ def set_up():
 def analyze_html_with_llm(html_content: str, llm):
     template = (
         "אני נותן לך דף HTML של דף אינטרנט {html}\n"
-        "זהה את האלמנטים הפעילים בדף (קישוריים, כפתורים, טפסים) ותאר את הפעולות שניתן לבצע עליהם.\n"
-        "החזר אך ורק JSON תקין בלבד (בלי טקסט נוסף). תמיין לפי סוג האלמנט (links, buttons, forms, inputs וכו')."
+        "זהה את כל האלמנטים הפעילים בדף (קישוריים, כפתורים, טפסים, אם יש עוד) ותאר את הפעולות שניתן לבצע עליהם.\n"
+        "החזר אך ורק JSON תקין בלבד (בלי טקסט נוסף). תמיין לפי סוג האלמנט (links, buttons, forms, inputs,other וכו')."
     )
 
     prompt = ChatPromptTemplate.from_template(template)
@@ -57,8 +57,7 @@ def main():
     try:
         html_content = driver.page_source
         operations = analyze_html_with_llm(html_content, llm)
-
-
+        print(operations)
 
     finally:
         driver.quit()
