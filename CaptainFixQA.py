@@ -57,7 +57,6 @@ def main():
     try:
         html_content = driver.page_source
         operations = analyze_html_with_llm(html_content, llm)
-        print(operations)
 
     finally:
         driver.quit()
