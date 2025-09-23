@@ -72,6 +72,7 @@ def generate_test_cases_by_llm(html_content:str , elements:str , llm):
     prompt = ChatPromptTemplate.from_template(template)
     chain = prompt | llm
 
+
     try:
         response = chain.invoke({"html":html_content , "elements":elements})
     except Exception as e:
