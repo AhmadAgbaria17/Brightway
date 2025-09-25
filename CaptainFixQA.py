@@ -1,17 +1,15 @@
 import os
 import json
+import subprocess
+import sys
 from textwrap import indent
-
 from langchain_core.prompts import ChatPromptTemplate
 from dotenv import load_dotenv
-
 import pandas as pd
 from openpyxl.utils import get_column_letter
-
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
-
 from langchain_openai import ChatOpenAI
 
 def set_up():
@@ -27,7 +25,6 @@ def set_up():
         api_key= os.getenv("OPENAI_API_KEY")
     )
     return driver , llm
-
 
 def analyze_html_with_llm(html_content: str, llm):
     template = (
@@ -49,7 +46,6 @@ def analyze_html_with_llm(html_content: str, llm):
     else:
         raw_text = str(response)
     return raw_text
-
 
 # generate a test cases
 def generate_test_cases_by_llm(html_content:str , elements:str , llm):
@@ -85,7 +81,6 @@ def generate_test_cases_by_llm(html_content:str , elements:str , llm):
     test_cases = json.loads(test_cases)
 
     return test_cases
-
 
 # export json file
 def export_testplan_json_file(filename: str , content: dict):
@@ -181,9 +176,91 @@ def export_testplan_to_excel( filename: str , content: dict):
         # Non-fatal: still valid Excel, just not auto-sized
         print("Warning: could not auto-size columns:", e)
 
+def create_selenium_script(test_cases, html_content, llm):
 
 
+    template = """
+You are a code generator. Output EXACTLY one Python 3 script (plain text ONLY — no JSON, no commentary, no markdown fences, no extra whitespace outside the script). The script must be runnable as-is and implement the test cases provided.
 
+Requirements for the produced Python script:
+1. Output format & content:
+   - The LLM should output ONLY the Python source code. Nothing else. Do not include surrounding backticks or explanation.
+2. Top-level behavior:
+   - Launch Selenium Chrome WebDriver using webdriver.Chrome() (assume chromedriver is available on PATH).
+   - Use WebDriverWait with a sensible timeout (8 seconds by default).
+   - Execute each test suite and case from the provided {test_cases} input.
+   - For each step, follow the mapping described below to actual Selenium operations.
+   - Each case must be wrapped in try/except to capture failures; continue running other cases after failures.
+3. Action -> Selenium mapping:
+   - "goto":
+       * open the local file "file:///C:/Users/Ahmed/Downloads/User%20Managment(1).html".
+   - "fill":
+       * Locate element with By.CSS_SELECTOR using explicit wait presence_of_element_located. Then clear() and send_keys(value).
+   - "click":
+       * Locate element with By.CSS_SELECTOR using explicit wait for element to be clickable, then click().
+   - "assert_element":
+       * If value == "visible" wait until visibility_of_element_located. If value == "hidden" wait until invisibility_of_element_located.
+   - "assert_text":
+       * Wait until the element located by selector contains the expected text (partial match acceptable).
+   - Unknown action: mark step as skipped and record a warning in results.
+5. Implementation notes:
+   - Use imports: json, os, traceback, time, and selenium required modules (webdriver, By, WebDriverWait, expected_conditions as EC).
+   - Use a default timeout variable (e.g. TIMEOUT = 8).
+   - Use driver.quit() in a finally block.
+   - Be defensive about missing selectors: if an element can't be located within the timeout, mark that step failed with the appropriate error and continue to the next step/case.
+6. Use the provided inputs:
+   - {html} will contain the full HTML content for the page.
+   - {test_cases} will contain the test suites JSON.
+7. Keep the code reasonably compact and readable (functions like run_step, run_case, run_suite are encouraged).
+"""
+
+    # Build the LangChain prompt and call the LLM chain
+    prompt = ChatPromptTemplate.from_template(template)
+    chain = prompt | llm
+
+    try:
+        response = chain.invoke({"html": html_content, "test_cases": test_cases})
+    except Exception as e:
+        raise RuntimeError(f"Failed to invoke chain: {e}")
+
+    if hasattr(response, "content"):
+        selenium_script = response.content
+    else:
+        selenium_script = str(response)
+    return selenium_script
+
+def exec_selenium_script(selenium_script: str, filename: str = "seleniumtest.py"):
+    """
+    Save selenium_script into filename and execute it with the current Python interpreter.
+    """
+    try:
+        # Write script to file
+        with open(filename, "w", encoding="utf-8") as f:
+            f.write(selenium_script)
+
+        print(f"[INFO] Script written to {filename}")
+
+        # Run the file using the same Python interpreter
+        result = subprocess.run(
+            [sys.executable, filename],
+            capture_output=True,
+            text=True
+        )
+
+        # Print stdout & stderr
+        if result.stdout:
+            print("[STDOUT]:")
+            print(result.stdout)
+
+        if result.stderr:
+            print("[STDERR]:")
+            print(result.stderr)
+
+        return result.returncode
+
+    except Exception as e:
+        print(f"[ERROR] Failed to execute {filename}: {e}")
+        return -1
 
 def main():
     driver,llm = set_up()
@@ -193,6 +270,11 @@ def main():
         test_cases = generate_test_cases_by_llm(html_content,elements , llm)
         export_testplan_json_file("PlanJson.txt", test_cases)
         export_testplan_to_excel("planExcel.xlsx",test_cases )
+
+        # generate a selenium script to check the web using test_cases file and exec the file
+
+        selenium_script = create_selenium_script(test_cases,html_content, llm)
+        exec_selenium_script(selenium_script)
 
     finally:
         driver.quit()

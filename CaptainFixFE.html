@@ -94,8 +94,9 @@
       <div class="form-group">
         <label for="depth">Test Type</label>
         <select id="depth">
-          <option>Smoke (5 cases)</option>
-          <option>Regression (10 cases)</option>
+          <option>5-7 test cases in total</option>
+          <option>10-12 test cases in total</option>
+            <option>15-17 test cases in total</option>
         </select>
       </div>
 
@@ -107,8 +108,19 @@
       </div>
 
       <div class="form-group">
-        <label for="report">Download Report Format</label>
-        <select id="report">
+        <label for="testPlanReport">Download TestPlan Report</label>
+        <select id="testPlanReport">
+            <option>NONE</option>
+          <option>JSON</option>
+          <option>EXCEL</option>
+          <option>JSON & EXCEL</option>
+        </select>
+      </div>
+
+        <div class="form-group">
+        <label for="resultReport">Download Result Report</label>
+        <select id="resultReport">
+            <option>NONE</option>
           <option>JSON</option>
           <option>EXCEL</option>
           <option>JSON & EXCEL</option>

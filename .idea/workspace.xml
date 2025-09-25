@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="30abb878-c157-4ddb-a7ab-c9ad531bc827" name="Changes" comment="Rename the file">
+    <list default="true" id="30abb878-c157-4ddb-a7ab-c9ad531bc827" name="Changes" comment="some changes and export execl and json file.">
+      <change afterPath="$PROJECT_DIR$/CaptinFixBE.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CaptainFixFE.html" beforeDir="false" afterPath="$PROJECT_DIR$/CaptainFixFE.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CaptainFixQA.py" beforeDir="false" afterPath="$PROJECT_DIR$/CaptainFixQA.py" afterDir="false" />
@@ -128,7 +129,23 @@
       <option name="project" value="LOCAL" />
       <updated>1758268855907</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="some changes and export execl and json file">
+      <option name="closed" value="true" />
+      <created>1758653273828</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1758653273828</updated>
+    </task>
+    <task id="LOCAL-00009" summary="some changes and export execl and json file.">
+      <option name="closed" value="true" />
+      <created>1758653320943</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1758653320943</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -149,6 +166,8 @@
     <MESSAGE value="Change title" />
     <MESSAGE value="make the prompt better of the analyze html with llm" />
     <MESSAGE value="Rename the file" />
-    <option name="LAST_COMMIT_MESSAGE" value="Rename the file" />
+    <MESSAGE value="some changes and export execl and json file" />
+    <MESSAGE value="some changes and export execl and json file." />
+    <option name="LAST_COMMIT_MESSAGE" value="some changes and export execl and json file." />
   </component>
 </project>
