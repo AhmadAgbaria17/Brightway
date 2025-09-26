@@ -12,12 +12,26 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 from langchain_openai import ChatOpenAI
 
+
+# --- Load config if passed as first arg
+CONFIG = {}
+if len(sys.argv) > 1:
+    config_path = sys.argv[1]
+    try:
+        with open(config_path, "r", encoding="utf-8") as f:
+            CONFIG = json.load(f)
+    except Exception as e:
+        print(f"[WARN] Could not read config file {config_path}: {e}")
+else:
+    print("[INFO] No config file passed. Using defaults.")
+
+
 def set_up():
     load_dotenv()
+    url = CONFIG.get("url")
+
     driver = webdriver.Chrome()
-    # html_link = input("enter you link please:\n")
-    # driver.get(html_link)
-    driver.get("file:///C:/Users/Ahmed/Downloads/User%20Managment(1).html")
+    driver.get(url)
     llm = ChatOpenAI(
         model='gpt-3.5-turbo',
         temperature=0.1,
@@ -49,12 +63,14 @@ def analyze_html_with_llm(html_content: str, llm):
 
 # generate a test cases
 def generate_test_cases_by_llm(html_content:str , elements:str , llm):
+    #depth = number of test cases
+    depth = CONFIG.get("depth")
     template =  """
         HTML: {html}
         ELEMENTS: {elements}   # e.g. ["/", "/login", "/contact", "/products"]
         Constraints:
         - Generate Suites: (Smoke, Navigation, Forms).
-        - Produce 5-12 test cases total 
+        - Produce: {depth}  (number of test cases total)
         - Each test case must include: id, title, priority (P0,P1,P2), steps (action/selector/value), expected(very important), tags (optional).
         - Allowed actions: goto, click, fill, assert_text, assert_element, assert_url, assert_status, wait, select, upload, hover, back, forward.
         - Use selectors that are likely to exist (ids, data-test attributes). If no selector possible, use the page-level step action (e.g., "assert_text" with selector "body").
@@ -70,7 +86,7 @@ def generate_test_cases_by_llm(html_content:str , elements:str , llm):
 
 
     try:
-        response = chain.invoke({"html":html_content , "elements":elements})
+        response = chain.invoke({"html":html_content , "elements":elements , "depth":depth})
     except Exception as e:
         raise RuntimeError(f"Failed to invoke chain: {e}")
     if hasattr(response, "content"):
@@ -264,15 +280,25 @@ def exec_selenium_script(selenium_script: str, filename: str = "seleniumtest.py"
 
 def main():
     driver,llm = set_up()
+
+    # Access config values anywhere:
+    email = CONFIG.get("email")
+    test_plan_report = CONFIG.get("testPlanReport")
+    result_report = CONFIG.get("resultReport")
+
+
     try:
         html_content = driver.page_source
         elements = analyze_html_with_llm(html_content, llm)
         test_cases = generate_test_cases_by_llm(html_content,elements , llm)
-        export_testplan_json_file("PlanJson.txt", test_cases)
-        export_testplan_to_excel("planExcel.xlsx",test_cases )
+
+        # If user requested JSON report, write it
+        if test_plan_report and ("JSON" in test_plan_report or "JSON" in (test_plan_report.upper())):
+            export_testplan_json_file("PlanJson.txt", test_cases)
+        if test_plan_report and ("EXCEL" in test_plan_report or "EXCEL" in test_plan_report.upper()):
+            export_testplan_to_excel("planExcel.xlsx", test_cases)
 
         # generate a selenium script to check the web using test_cases file and exec the file
-
         selenium_script = create_selenium_script(test_cases,html_content, llm)
         exec_selenium_script(selenium_script)
 

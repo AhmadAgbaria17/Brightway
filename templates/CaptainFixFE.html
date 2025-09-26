@@ -127,8 +127,57 @@
         </select>
       </div>
 
-      <button class="btn">Start Captain Fix Testing</button>
+        <button id="start-test-btn" type="button" class="btn">Start Captain Fix Testing</button>
     </form>
   </div>
 </body>
 </html>
+
+
+<script>
+document.getElementById('start-test-btn').addEventListener('click', async () => {
+  // collect values
+  const url = document.getElementById('url').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const tool = document.getElementById('tool').value;
+  const depth = document.getElementById('depth').value;
+  const browser = document.getElementById('browser').value;
+  const testPlanReport = document.getElementById('testPlanReport').value;
+  const resultReport = document.getElementById('resultReport').value;
+
+  // build payload
+  const payload = {
+    url,
+    email,
+    tool,
+    depth,
+    browser,
+    testPlanReport,
+    resultReport,
+    timestamp: new Date().toISOString()
+  };
+
+  try {
+    const res = await fetch('/start_test', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!res.ok) {
+      const txt = await res.text();
+      alert('Server error: ' + txt);
+      return;
+    }
+
+    const data = await res.json(); // expect JSON reply
+    // show user friendly message
+    alert(data.message || 'Test started');
+  } catch (err) {
+    console.error(err);
+    alert('Failed to start test: ' + err.message);
+  }
+});
+</script>

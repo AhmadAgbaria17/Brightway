@@ -4,11 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="30abb878-c157-4ddb-a7ab-c9ad531bc827" name="Changes" comment="some changes and export execl and json file.">
-      <change afterPath="$PROJECT_DIR$/CaptinFixBE.py" afterDir="false" />
+    <list default="true" id="30abb878-c157-4ddb-a7ab-c9ad531bc827" name="Changes" comment="add to funcs &#10;1- create selenium script&#10;2- exec_selenium_script">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CaptainFixFE.html" beforeDir="false" afterPath="$PROJECT_DIR$/CaptainFixFE.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CaptainFixFE.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/CaptainFixFE.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CaptainFixQA.py" beforeDir="false" afterPath="$PROJECT_DIR$/CaptainFixQA.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CaptinFixBE.py" beforeDir="false" afterPath="$PROJECT_DIR$/CaptinFixBE.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,18 +46,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;Python.CaptainFix.executor&quot;: &quot;Run&quot;,
-    &quot;Python.CaptainFixBE.executor&quot;: &quot;Run&quot;,
-    &quot;Python.CaptainFixQA.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python.CaptainFix.executor": "Run",
+    "Python.CaptainFixBE.executor": "Run",
+    "Python.CaptainFixQA.executor": "Run",
+    "Python.CaptinFixBE.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "master"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Ahmed\Desktop\ahmad17\projects\Brightway\templates" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -145,7 +151,15 @@
       <option name="project" value="LOCAL" />
       <updated>1758653320943</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="add to funcs &#10;1- create selenium script&#10;2- exec_selenium_script">
+      <option name="closed" value="true" />
+      <created>1758797717516</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1758797717516</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -168,6 +182,7 @@
     <MESSAGE value="Rename the file" />
     <MESSAGE value="some changes and export execl and json file" />
     <MESSAGE value="some changes and export execl and json file." />
-    <option name="LAST_COMMIT_MESSAGE" value="some changes and export execl and json file." />
+    <MESSAGE value="add to funcs &#10;1- create selenium script&#10;2- exec_selenium_script" />
+    <option name="LAST_COMMIT_MESSAGE" value="add to funcs &#10;1- create selenium script&#10;2- exec_selenium_script" />
   </component>
 </project>
